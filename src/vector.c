@@ -1,9 +1,8 @@
 #include "vector.h"
 #include <stdio.h>
 #include <stdlib.h>
-#ifndef __MAIN__
-//#define VECTOR_DEBUG
-#endif // !__MAIN__
+
+//#define __VECTOR_DEBUG
 
 Vector4_t *Vector4_zero()
 {
@@ -64,7 +63,7 @@ void Vector_destroy(void *v)
     v = NULL;
 }
 
-#ifdef VECTOR_DEBUG
+#ifdef __VECTOR_DEBUG
 
 int main()
 {
@@ -79,4 +78,4 @@ int main()
     return 0;
 }
 
-#endif // VECTOR_DEBUG
+#endif // !__VECTOR_DEBUG

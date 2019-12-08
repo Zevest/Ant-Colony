@@ -23,7 +23,7 @@ void ArrayList_insert(ArrayList_t *array, int index, char *val);
 char *ArrayList_get(ArrayList_t *array, int index);
 void ArrayList_set(ArrayList_t *array, int index, char *val);
 
-void ArrayListPrint(ArrayList_t *array, Printer print);
+void ArrayList_print(ArrayList_t *array, Printer print);
 
 int ArrayList_removeIndex(ArrayList_t *array, int index);
 int ArrayList_indexOf(ArrayList_t *array, char *val, Equals equal);

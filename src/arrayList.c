@@ -48,7 +48,7 @@ void ArrayList_add(ArrayList_t *array, char *val)
     memcpy(array->data + (array->count++ * array->__item_size), val, array->__item_size);
 }
 
-void ArrayList_Print(ArrayList_t *array, Printer print)
+void ArrayList_print(ArrayList_t *array, Printer print)
 {
     assert(array);
     /*if(!array)
@@ -187,4 +187,4 @@ int main()
     ArrayList_Print(array, printDouble);
     ArrayList_destroy(array);
 }
-#endif // __ARRAYLIST_DEBUG
+#endif // !__ARRAYLIST_DEBUG
