@@ -17,30 +17,28 @@ Graph new_graph(int vertices, Bool is_oriented)
 	int i;
 
 	Graph element;
-	printf("iij\n");
 	element = malloc(sizeof(*element));
 	if (element == NULL)
 	{
 		fprintf(stderr, "Erreur : Probleme creation Graphe.\n");
 		exit(EXIT_FAILURE);
 	}
-	printf("i5j\n");
-	element->fourmis = malloc(2 * sizeof vertices);
-	printf("i313j\n");
+	element->fourmis = malloc(2 * vertices * sizeof vertices);
 	element->is_oriented = is_oriented;
 	element->nb_vertices = vertices;
-	printf("'(-)'\n");
 	element->liste_arc = ArrayList_new(sizeof(Vector4_t));
-	element->nodelist = ArrayList_new(sizeof(struct NodeListElement));
+	element->nodelist = ArrayList_new(sizeof(NodeListElement));
 
 	//element->tab_neighbours = malloc(vertices * sizeof(AdjencyListElement));
+	Node empty = malloc(sizeof(NodeListElement));
 	for (i = 0; i < vertices; i++)
 	{
-		Node n = malloc(sizeof(struct NodeListElement));
+		//Node n = malloc(sizeof(NodeListElement));
 		element->fourmis[2 * i] = i;
 		element->fourmis[2 * i + 1] = i;
-		ArrayList_add(element->nodelist, (char *)n);
+		ArrayList_add(element->nodelist, (char *)empty);
 	}
+	free(empty);
 	/* 
 	}
 	if(element->liste_arc == NULL)
@@ -104,7 +102,7 @@ Node add_node(int x)
 	}
 
 	n->value = x;
-	n->pos = Vector2_new((int)Random_randRange(1, 30), (int)Random_randRange(1, 30));
+	Vector2_set(&n->pos, (int)Random_randRange(1, 30), (int)Random_randRange(1, 30));
 
 	return n;
 }
@@ -120,9 +118,21 @@ Node add_node(int x)
 void add_edge(Graph g, int src, int dest)
 {
 	Node n = add_node(dest);
-	ArrayList_add(g->liste_arc, (char *)Vector4_new(src, dest, Random_randRange(0, 1), 0));
+	//double randVal =
+	Vector4_t branch;
+	Vector4_set(&branch, src, dest, Random_randRange(0, 1), 0);
+	ArrayList_add(g->liste_arc, (char *)&branch);
+	//free(branch);
 	//g->tab_neighbours[src-1].begin = n;
+	//Node tmp = (Node)ArrayList_get(g->nodelist, src - 1);
+	//printf("tmp %p", tmp);
+	/*
+	if (tmp != NULL)
+		free(tmp);
+		*/
 	ArrayList_set(g->nodelist, src - 1, (char *)n);
+	free(n);
+
 	/*if(!g->is_oriented)
 	{
 		n = add_node(src);
@@ -132,10 +142,12 @@ void add_edge(Graph g, int src, int dest)
 	}*/
 
 	//Ajout d'un lien dans le fichier Graphviz
+	/*
 	if (g->is_oriented)
 		fprintf(g->graph_file, "\t%d -> %d;\n", src, dest);
 	else
 		fprintf(g->graph_file, "\t%d -- %d;\n", src, dest);
+	*/
 }
 
 /*----------------------------------------------------------------------------------------------*/
@@ -147,19 +159,22 @@ void add_edge(Graph g, int src, int dest)
 void print_graph(Graph g)
 {
 	int i;
-
 	for (i = 1; i < g->nb_vertices + 1; i++)
 	{
 		Node n = (Node)ArrayList_get(g->nodelist, i - 1);
-		printf("(%d) : ", i);
-		/*
-		while(n != NULL)
-		{*/
-		printf("%d, ", n->value);
-		//n = n->next;
-		//}
-
-		//printf("NULL\n");
+		printf("(%d): ", i);
+		if (n != NULL)
+		{
+			printf("x:%.1f, y:%.1f", n->pos.x, n->pos.y);
+			printf("val: %d\n", n->value);
+		}
+		else
+			printf("pos(NULL), val; NULL\n");
+	}
+	for (i = 0; i < g->liste_arc->count; ++i)
+	{
+		Vector4_t branch = *(Vector4_t *)ArrayList_get(g->liste_arc, i);
+		printf("Arrête(%d, %d)\n	distance: %0.3f\n	phéromone: %0.3f\n", (int)branch.x, (int)branch.y, branch.w, branch.z);
 	}
 }
 
@@ -220,22 +235,34 @@ void erase_graph(Graph g)
 	//Libération du Graphe de la mémoire
 	free(g);
 }*/
+
 int main(int argc, char const *argv[])
 {
-	printf("sssss\n");
 	Graph g = new_graph(30, false);
-	printf("bb\n");
 	int i, j = 2;
 	for (int i = 1; i < 30; i++)
 	{
+		//printf("Doing it for %d times.\n", i);
 		add_edge(g, i, j);
+		//printf("Then\n");
 		j++;
 	}
-	printf("sss\n");
 	print_graph(g);
-	printf("aaa\n");
-	free(g->nodelist);
-	free(g->liste_arc);
+	/*
+	for (i = 0; i < g->nodelist->count; i++)
+	{
+		Node n = (Node)ArrayList_get(g->nodelist, i);
+		if (n)
+		{
+			free(n);
+		}
+	}
+	for (i = 0; i < g->liste_arc->count; i++)
+	{
+		free((Vector4_t *)ArrayList_get(g->nodelist, i));
+	}*/
+	ArrayList_destroy(g->nodelist);
+	ArrayList_destroy(g->liste_arc);
 	free(g->fourmis);
 	free(g);
 	return 0;
