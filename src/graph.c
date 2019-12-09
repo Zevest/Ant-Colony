@@ -165,7 +165,7 @@ void print_graph(Graph g)
 		printf("(%d): ", i);
 		if (n != NULL)
 		{
-			printf("x:%.1f, y:%.1f", n->pos.x, n->pos.y);
+			printf("x:%.1f, y:%.1f, ", n->pos.x, n->pos.y);
 			printf("val: %d\n", n->value);
 		}
 		else
