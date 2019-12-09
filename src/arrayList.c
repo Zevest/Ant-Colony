@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include "ArrayList.h"
+#include "arrayList.h"
 //#define __ARRAYLIST_DEBUG
 
 ArrayList_t *ArrayList_new(size_t __size)
