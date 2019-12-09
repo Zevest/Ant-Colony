@@ -1,4 +1,5 @@
 #include "vector.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,20 +8,27 @@
 Vector4_t *Vector4_zero()
 {
     Vector4_t *v = (Vector4_t *)malloc(sizeof(Vector4_t));
-    v->w = 0;
     v->x = 0;
     v->y = 0;
     v->z = 0;
+    v->w = 0;
     return v;
 }
-Vector4_t *Vector4_new(double w, double x, double y, double z)
+Vector4_t *Vector4_new(double x, double y, double z, double w)
 {
     Vector4_t *v = (Vector4_t *)malloc(sizeof(Vector4_t));
-    v->w = w;
     v->x = x;
     v->y = y;
     v->z = z;
+    v->w = w;
     return v;
+}
+void Vector4_set(Vector4_t *v, double x, double y, double z, double w)
+{
+    v->x = x;
+    v->y = y;
+    v->z = z;
+    v->w = w;
 }
 
 Vector3_t *Vector3_zero()
@@ -41,6 +49,12 @@ Vector3_t *Vector3_new(double x, double y, double z)
     v->z = z;
     return v;
 }
+void Vector3_set(Vector3_t *v, double x, double y, double z)
+{
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
 
 Vector2_t *Vector2_zero()
 {
@@ -56,11 +70,31 @@ Vector2_t *Vector2_new(double x, double y)
     v->y = y;
     return v;
 }
+void Vector2_set(Vector2_t *v, double x, double y)
+{
+    v->x = x;
+    v->y = y;
+}
 
 void Vector_destroy(void *v)
 {
     free(v);
     v = NULL;
+}
+
+double Vector2_dist(Vector2_t *a, Vector2_t *b)
+{
+    return sqrt((b->x - a->x) * (b->x - a->x) + (b->y - a->y) * (b->y - a->y));
+}
+
+double Vector3_dist(Vector3_t *a, Vector3_t *b)
+{
+    return sqrt((b->x - a->x) * (b->x - a->x) + (b->y - a->y) * (b->y - a->y) + (b->z - a->z) * (b->z - a->z));
+}
+
+double Vector4_dist(Vector4_t *a, Vector4_t *b)
+{
+    return sqrt((b->x - a->x) * (b->x - a->x) + (b->y - a->y) * (b->y - a->y) + (b->z - a->z) * (b->z - a->z) + (b->w - a->w) * (b->w - a->w));
 }
 
 #ifdef __VECTOR_DEBUG
