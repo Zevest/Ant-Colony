@@ -1,6 +1,5 @@
 #include <stdio.h>
-#ifndef _ARRAYLIST_H
-#define _ARRAYLIST_H
+#ifndef __ARRAYLIST_H__
 
 typedef struct ArrayList
 {
@@ -31,4 +30,5 @@ int ArrayList_indexOf(ArrayList_t *array, char *val, Equals equal);
 int ArrayList_removeValue(ArrayList_t *array, char *val, Equals equal);
 int ArrayList_containValue(ArrayList_t *array, char *val, Equals equal);
 
+#define __ARRAYLIST_H__
 #endif // !_ARRAYLIST_H

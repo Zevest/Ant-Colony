@@ -1,5 +1,4 @@
-#ifndef _VECTOR_H
-#define _VECTOR_H
+#ifndef __VECTOR_H__
 typedef struct Vector4_t
 {
     double x, y, z, w;
@@ -29,4 +28,5 @@ void Vector2_set(Vector2_t *v, double x, double y);
 double Vector2_dist(Vector2_t *a, Vector2_t *b);
 
 void Vector_destroy(void *v);
-#endif // !_VECTOR_H
+#define __VECTOR_H__
+#endif // !__VECTOR_H__

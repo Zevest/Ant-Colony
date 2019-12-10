@@ -1,5 +1,4 @@
 #ifndef __GRAPH__H__
-#define __GRAPH__H__
 #include "vector.h"
 #include "arrayList.h"
 /* Définition d'un Booléen */
@@ -44,4 +43,5 @@ void print_graph(Graph g);
 void display_graph(Graph g);
 void erase_graph(Graph g);
 
+#define __GRAPH__H__
 #endif

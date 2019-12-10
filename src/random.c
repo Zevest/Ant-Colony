@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include "arrayList.h"
+#include "random.h"
 
-int __rand__intialised = 0;
+#pragma startup __Random_init
 
 double map(double val, double minSrc, double maxSrc, double minDest, double maxDest)
 {
@@ -12,14 +13,11 @@ double map(double val, double minSrc, double maxSrc, double minDest, double maxD
 
 void __Random_init()
 {
-    __rand__intialised = 1;
     srand(time(NULL));
 }
 
 double Random_randRange(double minV, double maxV)
 {
-    if (!__rand__intialised)
-        __Random_init();
     return map(rand(), 0, RAND_MAX, minV, maxV);
 }
 
@@ -28,8 +26,6 @@ int Random_weighted(double weights[], int len)
     float max = 0, v;
     int i, j;
     ArrayList_t *coeff, *index;
-    if (!__rand__intialised)
-        __Random_init();
     for (i = 0; i < len; ++i)
     {
         max += weights[i];
