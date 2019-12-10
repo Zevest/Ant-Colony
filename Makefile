@@ -1,22 +1,24 @@
 CC= gcc
 LDFLAGS = -Wall
-SDLBUILD = `src/SDL/build/sdl2-config --cflags --libs`
+CD = cd
+SDLBUILD = `sdl2-config --cflags --libs`
 LIBS = -lm
 DIR = src/SDL/build/ant_src/
-SRC = $(DIR)graph.c $(DIR)arrayList.c $(DIR)random.c $(DIR)vector.c $(DIR)sdl_graph.c
-BUILD = build/
+SRC = graph.c arrayList.c random.c vector.c
+MAIN = sdl_graph.c
+BUILD = 
 OBJ = $(SRC:.c=.o)
 EXEC = app
 
 all:	$(BUILD)$(EXEC) test clean
-	
 
-$(BUILD)$(EXEC): $(OBJ)
-	$(CC) $(OBJ) -o $(BUILD)$(EXEC) $(LIBS)
+$(BUILD)$(EXEC): $(OBJ) 
+	$(CC) $(MAIN) *.o -o $(BUILD)$(EXEC) $(LIBS) $(SDLBUILD)
 
 $(EXEC): $(SRC)
 	$(CC) $(LDFLAGS) -c $(SRC) $(LIBS) $(SDLBUILD)
 
+	
 test:	$(BUILD)$(EXEC)
 	$(BUILD)$(EXEC)
 
