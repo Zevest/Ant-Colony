@@ -9,4 +9,4 @@ double Random_randRange(double minV, double maxV);
 int Random_weighted(double weights[], int len);
 
 #define __RANDOM_H__
-#endif // !_RANDOM_H
+#endif // !__RANDOM_H__

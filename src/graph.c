@@ -117,37 +117,14 @@ Node add_node(int x)
 */
 void add_edge(Graph g, int src, int dest)
 {
-	Node n = add_node(dest);
-	//double randVal =
+	Node n = add_node(src);
 	Vector4_t branch;
 	Vector4_set(&branch, src, dest, Random_randRange(0, 1), 0);
 	ArrayList_add(g->liste_arc, (char *)&branch);
-	//free(branch);
-	//g->tab_neighbours[src-1].begin = n;
-	//Node tmp = (Node)ArrayList_get(g->nodelist, src - 1);
-	//printf("tmp %p", tmp);
-	/*
-	if (tmp != NULL)
-		free(tmp);
-		*/
+
 	ArrayList_set(g->nodelist, src - 1, (char *)n);
 	free(n);
 
-	/*if(!g->is_oriented)
-	{
-		n = add_node(src);
-		//ArrayList_set(g->Nodelist,src-1);
-		n->next = g->tab_neighbours[dest-1].begin;
-		g->tab_neighbours[dest-1].begin = n;
-	}*/
-
-	//Ajout d'un lien dans le fichier Graphviz
-	/*
-	if (g->is_oriented)
-		fprintf(g->graph_file, "\t%d -> %d;\n", src, dest);
-	else
-		fprintf(g->graph_file, "\t%d -- %d;\n", src, dest);
-	*/
 }
 
 /*----------------------------------------------------------------------------------------------*/
@@ -193,6 +170,8 @@ void display_graph(Graph g)
 		system("%CD%/graphviz/bin/dotty.exe graph.out");
 }
 
+
+
 /*----------------------------------------------------------------------------------------------*/
 
 /**
@@ -236,16 +215,31 @@ void erase_graph(Graph g)
 	free(g);
 }*/
 
+
+
 int main(int argc, char const *argv[])
 {
+	Vector4_t *arrete;
+	Node start, end;
+
+
 	Graph g = new_graph(30, false);
 	int i, j = 2;
-	for (int i = 1; i < 30; i++)
+	for (i = 1; i < 30; i++)
 	{
 		//printf("Doing it for %d times.\n", i);
 		add_edge(g, i, j);
 		//printf("Then\n");
 		j++;
+	}
+	for (i = 1; i < 30; i++)
+	{
+		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);
+		start = (Node)ArrayList_get(g->nodelist,(int) arrete->x);
+		end = (Node)ArrayList_get(g->nodelist,(int) arrete->y);
+		arrete->w = Vector2_dist(&start->pos, &end->pos);
+		//Vector4_set(arrete, arrete->x, arrete->y, arrete->z, dist);		
+		
 	}
 	print_graph(g);
 	/*
