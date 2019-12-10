@@ -4,7 +4,7 @@
 #include "arrayList.h"
 #include "random.h"
 #include "graph.h"
-
+//#define __GRAPH_DEBUG
 /**
 * Créée un Graphe
 * @param vertices Le nombre de sommets
@@ -216,7 +216,7 @@ void erase_graph(Graph g)
 }*/
 
 
-
+#ifdef __GRAPH_DEBUG
 int main(int argc, char const *argv[])
 {
 	Vector4_t *arrete;
@@ -255,9 +255,11 @@ int main(int argc, char const *argv[])
 	{
 		free((Vector4_t *)ArrayList_get(g->nodelist, i));
 	}*/
+	printf("Test\n");
 	ArrayList_destroy(g->nodelist);
 	ArrayList_destroy(g->liste_arc);
 	free(g->fourmis);
 	free(g);
 	return 0;
 }
+#endif // !__GRAPH_DEBUG
