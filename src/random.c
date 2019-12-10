@@ -50,6 +50,7 @@ int Random_weighted(double weights[], int len)
     ArrayList_destroy(coeff);
     return i;
 }
+//#define __RANDOM_DEBUG
 #ifdef __RANDOM_DEBUG
 int main()
 {
@@ -58,8 +59,6 @@ int main()
     double proba[10] = {0.20, 0.15, 0.30, 0.42, 0.30, 0.20, 4.50, 0.02, 0.18, 0.24};
     int i;
     printf("map(18, 12, 20, 0, 100) = %0.2f\n", map(18, 12, 20, 0, 100));
-    printf("maxlistA = %0.2f\n", listA[maxIndex(listA, 10)]);
-    printf("minlistA = %0.2f\n", listA[minIndex(listA, 10)]);
     printf("randRange(17, 53) = %0.2f\n", Random_randRange(17, 53));
     printf("Random_weighted listA: %0.2f\n", listA[Random_weighted(proba, 10)]);
     printf("Random_weighted listB: %0.2f\n", listB[Random_weighted(proba, 10)]);
