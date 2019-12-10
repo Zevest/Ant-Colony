@@ -1,0 +1,28 @@
+build/SDL_sndioaudio.lo: \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/SDL_sndioaudio.c \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/../../SDL_internal.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/../../dynapi/SDL_dynapi.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/../../dynapi/SDL_dynapi_overrides.h \
+ include/SDL_config.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_platform.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/begin_code.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/close_code.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_audio.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_stdinc.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_config.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_error.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_endian.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_mutex.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_thread.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_atomic.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_platform.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_rwops.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/../SDL_audio_c.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/../../SDL_internal.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/SDL_sndioaudio.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/../SDL_sysaudio.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_mutex.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_thread.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/../../SDL_dataqueue.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/audio/sndio/.././SDL_audio_c.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_loadso.h

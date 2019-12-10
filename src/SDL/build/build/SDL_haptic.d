@@ -1,0 +1,20 @@
+build/SDL_haptic.lo: \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/SDL_haptic.c \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/../SDL_internal.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/../dynapi/SDL_dynapi.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/../dynapi/SDL_dynapi_overrides.h \
+ include/SDL_config.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_platform.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/begin_code.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/close_code.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/SDL_syshaptic.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_haptic.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_stdinc.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_config.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_error.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_joystick.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/SDL_haptic_c.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/../joystick/SDL_joystick_c.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/src/haptic/../joystick/../SDL_internal.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_joystick.h \
+ /home/scouram/dev/C/Imperative/projet/Ant-Colony/src/SDL/include/SDL_assert.h
