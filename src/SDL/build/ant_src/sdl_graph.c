@@ -132,13 +132,18 @@ int main(int argc, char** argv){
 	Graph g = new_graph(total, false);
 	int i, j = 2;
 
-	for (i = 1; i < total; i++)
-	{
+	//for (i = 1; i < total; i++)
+	//{
 		//printf("Doing it for %d times.\n", i);
-		add_edge(g, i, j);
+		//add_edge(g, i, j);
+		add_edge(g, 1, 2);
+		add_edge(g, 1, 3);
+		add_edge(g, 1, 4);
+		add_edge(g, 1, 0);
+		//add_edge(g, 1, 0);
 		//printf("Then\n");
-		j++;
-	}
+		//j++;
+	//}
 	
 	for (i = 1; i < g->liste_arc->count; i++)
 	{
@@ -214,7 +219,7 @@ int main(int argc, char** argv){
 	free(g->fourmis);
 	free(g);
 		
-	SDL_Delay(5000);
+	SDL_Delay(60000);
 	
 	
 	SDL_DestroyRenderer(renderer);
