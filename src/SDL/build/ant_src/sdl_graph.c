@@ -70,110 +70,10 @@ void circle(SDL_Renderer * renderer, int x, int y, int r){
  * Lesson 0: Test to make sure SDL is setup properly
  */
 int main(int argc, char** argv){
-	if (SDL_Init(SDL_INIT_VIDEO) != 0){
-		logSDLError(stdout,"SDL_Init");
-		return 1;
-	}
-	SDL_Window *window= SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
-	if (window == NULL){
-		logSDLError(stdout,"SDL_CreateWindow");
-		SDL_Quit();
-		return 1;
-	}
-	SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if(renderer == NULL){
-		SDL_DestroyWindow(window);
-		logSDLError(stdout,"SDL_CreateRenderer");
-		SDL_Quit();
-		return 1;
-	}
-	/*
-	SDL_Texture *background = loadTexture("background.bmp", renderer),
-				*foreground = loadTexture("foreground.bmp", renderer);
 	
-	
-	if(background == NULL || foreground == NULL){
-		SDL_DestroyTexture(background);
-		SDL_DestroyTexture(foreground);
-		SDL_DestroyRenderer(renderer);
-		SDL_DestroyWindow(window);
-		//cleanup(background, foreground, renderer, window);
-		//printf(stdout, "test\n");
-		SDL_Quit();
-		return 1;
-	}
-	
-	
-	//fprintf(stdout, "test\n");
-	//SDL_RenderClear(renderer);
-	int bw, bh;
-	SDL_QueryTexture(background, NULL, NULL, &bw, &bh);
-	renderTexture(background, renderer, 0, 0);
-	renderTexture(background, renderer, bw, 0);
-	renderTexture(background, renderer, 0, bh);
-	renderTexture(background, renderer, bw, bh);
-	fprintf(stdout, "test\n");
-	int fw, fh;
-	SDL_QueryTexture(foreground, NULL, NULL, &fw, &fh);
-	int fx = SCREEN_WIDTH/2 - fw/2;
-	int fy = SCREEN_HEIGHT/2 - fh/2;
-	printf("%d %d %d %d %d %d\n", bw, bh, fx, fy, fw, fh);
-	renderTexture(foreground, renderer, fx, fy);
-	SDL_RenderPresent(renderer);
-	//SDL_Delay(2000);
-	//int SDL_SetRenderDrawColor(SDL_Renderer* renderer,255, 0, 0, 0);
-
-	
-	char * image_path = "test.bmp";
-	SDL_Surface *bmp = SDL_LoadBMP(image_path);
-	if(bmp == NULL){
-		SDL_DestroyRenderer(renderer);
-		SDL_DestroyWindow(window);
-		printf("SDL_LoadBMP Error: %s\n", SDL_GetError());
-		SDL_Quit();
-	}
-	
-	SDL_Texture * texture  = SDL_CreateTextureFromSurface(renderer, bmp);
-	SDL_FreeSurface(bmp);
-	if(texture == NULL){
-		SDL_DestroyRenderer(renderer);
-		SDL_DestroyWindow(window);
-		printf("SDL_CreateTextureFromSurface Error: %s\n", SDL_GetError());
-		SDL_Quit();
-	}
-	*/
-	SDL_Rect rec2d = {
-		SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 200, 200
-	};	
-	
-	
-	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
-	for (int i = 0; i < 3; ++i){
-		//First clear the renderer
-		SDL_RenderClear(renderer);
-		//Draw the texture
-		//SDL_RenderCopy(renderer, texture, NULL, NULL);
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		SDL_RenderFillRect(renderer, &rec2d);
-		SDL_RenderDrawLine(renderer, 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-		circle(renderer, 100, 100, 125); 
-		//Update the screen
-		SDL_RenderPresent(renderer);
-		//Take a quick break after all that hard work
-		SDL_Delay(500);
-	}
-	
-	
-	
-	//sSDL_DestroyTexture(texture);
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	
-	SDL_Quit();
 	
 	
 	///////////////////////////////////////////
-	
 	Vector4_t *arrete;
 	Node start, end;
 
@@ -187,6 +87,7 @@ int main(int argc, char** argv){
 		//printf("Then\n");
 		j++;
 	}
+	
 	for (i = 1; i < 30; i++)
 	{
 		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);
@@ -210,14 +111,58 @@ int main(int argc, char** argv){
 	{
 		free((Vector4_t *)ArrayList_get(g->nodelist, i));
 	}*/
-	printf("Test\n");
+
 	ArrayList_destroy(g->nodelist);
 	ArrayList_destroy(g->liste_arc);
 	free(g->fourmis);
 	free(g);
-	
-	
+
 	//////////////////////////////////////////
+	
+	if (SDL_Init(SDL_INIT_VIDEO) != 0){
+		logSDLError(stdout,"SDL_Init");
+		return 1;
+	}
+	SDL_Window *window= SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+	if (window == NULL){
+		logSDLError(stdout,"SDL_CreateWindow");
+		SDL_Quit();
+		return 1;
+	}
+	SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if(renderer == NULL){
+		SDL_DestroyWindow(window);
+		logSDLError(stdout,"SDL_CreateRenderer");
+		SDL_Quit();
+		return 1;
+	}
+	
+	SDL_Rect rec2d = {
+		SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 200, 200
+	};	
+	
+	
+	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
+	for (int i = 0; i < 3; ++i){
+		//First clear the renderer
+		SDL_RenderClear(renderer);
+		//Draw the texture
+		//SDL_RenderCopy(renderer, texture, NULL, NULL);
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(renderer, &rec2d);
+		SDL_RenderDrawLine(renderer, 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+		circle(renderer, 100, 100, 125); 
+		//Update the screen
+		SDL_RenderPresent(renderer);
+		//Take a quick break after all that hard work
+		SDL_Delay(500);
+	}
+	
+	
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	
+	SDL_Quit();
 	
 	return 0;
 }
