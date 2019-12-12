@@ -70,7 +70,6 @@ void circle(SDL_Renderer * renderer, double x, double y, double r){
 
 void drawGraph(SDL_Renderer * renderer, Graph g){
 	int i;
-	printf("KARIM STEVE\n");
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	for (i = 0; i < g->liste_arc->count; ++i)
 	{
@@ -113,7 +112,6 @@ void drawGraph(SDL_Renderer * renderer, Graph g){
 		else
 			printf("pos(NULL), val; NULL\n");
 	}
-	printf("FIN FIN\n");
 }
 
 
@@ -209,18 +207,30 @@ int main(int argc, char** argv){
 		//SDL_RenderPresent(renderer);
 		//Take a quick break after all that hard work
 		//SDL_Delay(500);
-	
-	SDL_RenderClear(renderer);
+
 	print_graph(g);
-	drawGraph(renderer, g);
-	SDL_RenderPresent(renderer);
+	
+	SDL_Event event;
+	
+	Bool exit = false;
+	while(!exit){
+		SDL_PollEvent(&event);
+		if (event.type == SDL_QUIT) {
+			SDL_Log("Program quit after %i ticks", event.quit.timestamp);
+			exit = true;
+			break;
+		}
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+		drawGraph(renderer, g);
+		SDL_RenderPresent(renderer);
+		
+	}
+	
 	ArrayList_destroy(g->nodelist);
-	ArrayList_destroy(g->liste_arc);
+	ArrayList_destroy(g->liste_arc);	
 	free(g->fourmis);
 	free(g);
-		
-	SDL_Delay(60000);
-	
 	
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
