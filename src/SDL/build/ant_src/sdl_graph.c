@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include "vector.h"
 #include "graph.h"
+#include "random.h"
 
 const int SCREEN_WIDTH = 640, SCREEN_HEIGHT = 480;
 const char ressourcesPath[] = "rsc";
@@ -55,16 +56,66 @@ void renderTexture(SDL_Texture * texture, SDL_Renderer * renderer, int x, int y)
 }
 
 
-void circle(SDL_Renderer * renderer, int x, int y, int r){
+void circle(SDL_Renderer * renderer, double x, double y, double r){
 	int i,j;
-	for(j = 0;  j < r; ++j){
-		for(i = 0;  i < r; ++i){
-			if((i-x)*(i-x) + (j-y)*(j-y) < r){
+	for(j = -r;  j < r; ++j){
+		for(i = -r;  i < r; ++i){
+			if((i)*(i) + (j)*(j) < r){
 				SDL_RenderDrawPoint(renderer,x+i, y+j);
 			}
 		}
 	}
 }
+
+
+void drawGraph(SDL_Renderer * renderer, Graph g){
+	int i;
+	printf("KARIM STEVE\n");
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	for (i = 0; i < g->liste_arc->count; ++i)
+	{
+		
+		Vector4_t branch = *(Vector4_t *)ArrayList_get(g->liste_arc, i);
+		Node start = (Node)ArrayList_get(g->nodelist, (int)branch.x);
+		Node end = (Node)ArrayList_get(g->nodelist, (int) branch.y);
+		SDL_RenderDrawLine(renderer,
+			map(start->pos.x,0, 30, 0, SCREEN_WIDTH),
+			map(start->pos.y,0, 30, 0, SCREEN_HEIGHT),
+			map(end->pos.x,0, 30, 0, SCREEN_WIDTH),
+			map(end->pos.y,0, 30, 0, SCREEN_HEIGHT)
+			);
+		SDL_RenderDrawLine(renderer,
+			map(start->pos.x,0, 30, 0, SCREEN_WIDTH),
+			map(start->pos.y,0, 30, 0, SCREEN_HEIGHT),
+			map(end->pos.x,0, 30, 0, SCREEN_WIDTH),
+			map(end->pos.y,0, 30, 0, SCREEN_HEIGHT)
+			);
+		SDL_RenderDrawLine(renderer,
+			map(start->pos.x,0, 30, 0, SCREEN_WIDTH),
+			map(start->pos.y,0, 30, 0, SCREEN_HEIGHT),
+			map(end->pos.x,0, 30, 0, SCREEN_WIDTH),
+			map(end->pos.y,0, 30, 0, SCREEN_HEIGHT)
+			);
+		
+		//printf("Arrête(%d, %d)\n	distance: %0.3f\n	phéromone: %0.3f\n", (int)branch.x, (int)branch.y, branch.w, branch.z);
+	}
+	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+	for (i = 1; i < g->nb_vertices + 1; i++)
+	{
+		Node n = (Node)ArrayList_get(g->nodelist, i - 1);
+		//printf("(%d): ", i);
+		if (n != NULL)
+		{
+			double posX = map(n->pos.x, 0, 30, 0, SCREEN_WIDTH);
+			double posY = map(n->pos.y, 0, 30, 0, SCREEN_HEIGHT);
+			circle(renderer,posX,posY,50);
+		}
+		else
+			printf("pos(NULL), val; NULL\n");
+	}
+	printf("FIN FIN\n");
+}
+
 
 /*
  * Lesson 0: Test to make sure SDL is setup properly
@@ -77,10 +128,11 @@ int main(int argc, char** argv){
 	Vector4_t *arrete;
 	Node start, end;
 
-
-	Graph g = new_graph(30, false);
+	int total = 5;
+	Graph g = new_graph(total, false);
 	int i, j = 2;
-	for (i = 1; i < 30; i++)
+
+	for (i = 1; i < total; i++)
 	{
 		//printf("Doing it for %d times.\n", i);
 		add_edge(g, i, j);
@@ -88,7 +140,7 @@ int main(int argc, char** argv){
 		j++;
 	}
 	
-	for (i = 1; i < 30; i++)
+	for (i = 1; i < g->liste_arc->count; i++)
 	{
 		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);
 		start = (Node)ArrayList_get(g->nodelist,(int) arrete->x);
@@ -97,7 +149,7 @@ int main(int argc, char** argv){
 		//Vector4_set(arrete, arrete->x, arrete->y, arrete->z, dist);		
 		
 	}
-	print_graph(g);
+	//print_graph(g);
 	/*
 	for (i = 0; i < g->nodelist->count; i++)
 	{
@@ -112,10 +164,7 @@ int main(int argc, char** argv){
 		free((Vector4_t *)ArrayList_get(g->nodelist, i));
 	}*/
 
-	ArrayList_destroy(g->nodelist);
-	ArrayList_destroy(g->liste_arc);
-	free(g->fourmis);
-	free(g);
+	
 
 	//////////////////////////////////////////
 	
@@ -143,26 +192,37 @@ int main(int argc, char** argv){
 	
 	
 	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
-	for (int i = 0; i < 3; ++i){
 		//First clear the renderer
-		SDL_RenderClear(renderer);
+		//SDL_RenderClear(renderer);
 		//Draw the texture
 		//SDL_RenderCopy(renderer, texture, NULL, NULL);
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		SDL_RenderFillRect(renderer, &rec2d);
-		SDL_RenderDrawLine(renderer, 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-		circle(renderer, 100, 100, 125); 
+		//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		//SDL_RenderFillRect(renderer, &rec2d);
+		//SDL_RenderDrawLine(renderer, 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+		//circle(renderer, 100, 100, 125); 
 		//Update the screen
-		SDL_RenderPresent(renderer);
+		//SDL_RenderPresent(renderer);
 		//Take a quick break after all that hard work
-		SDL_Delay(500);
-	}
+		//SDL_Delay(500);
+	
+	SDL_RenderClear(renderer);
+	print_graph(g);
+	drawGraph(renderer, g);
+	SDL_RenderPresent(renderer);
+	ArrayList_destroy(g->nodelist);
+	ArrayList_destroy(g->liste_arc);
+	free(g->fourmis);
+	free(g);
+		
+	SDL_Delay(5000);
 	
 	
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	
 	SDL_Quit();
+	
+	
 	
 	return 0;
 }

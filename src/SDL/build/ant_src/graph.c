@@ -64,7 +64,7 @@ Graph new_graph(int vertices, Bool is_oriented)
 		fprintf(element->graph_file, "digraph my_graph\n{\n");
 	else
 		fprintf(element->graph_file, "graph my_graph\n{\n");
-*/
+	*/
 	return element;
 }
 
