@@ -23,22 +23,27 @@ Graph new_graph(int vertices, Bool is_oriented)
 		fprintf(stderr, "Erreur : Probleme creation Graphe.\n");
 		exit(EXIT_FAILURE);
 	}
-	element->fourmis = malloc(2 * vertices * sizeof vertices);
+	element->fourmis = malloc(2 * vertices * sizeof *element->fourmis);
 	element->is_oriented = is_oriented;
 	element->nb_vertices = vertices;
 	element->liste_arc = ArrayList_new(sizeof(Vector4_t));
 	element->nodelist = ArrayList_new(sizeof(NodeListElement));
 
 	//element->tab_neighbours = malloc(vertices * sizeof(AdjencyListElement));
-	Node empty = malloc(sizeof(NodeListElement));
+	//Node empty = malloc(sizeof(NodeListElement));
 	for (i = 0; i < vertices; i++)
 	{
-		//Node n = malloc(sizeof(NodeListElement));
-		element->fourmis[2 * i] = i;
-		element->fourmis[2 * i + 1] = i;
-		ArrayList_add(element->nodelist, (char *)empty);
+		Node n = add_node(i) ;
+		ArrayList_add(element->nodelist,(char *)n);
+		element->fourmis[2 * i].node = i;
+		element->fourmis[2 * i + 1].node = i;
+		element->fourmis[2 * i].tabou = ArrayList_new(sizeof i);
+		element->fourmis[2 * i + 1].tabou = ArrayList_new(sizeof i);
+		ArrayList_add(element->fourmis[2*i].tabou,(char*) &i);
+		ArrayList_add(element->fourmis[2*i+1].tabou,(char*) &i);
+		//ArrayList_add(element->nodelist, (char *)empty);
 	}
-	free(empty);
+	//free(empty);
 	/* 
 	}
 	if(element->liste_arc == NULL)
@@ -64,7 +69,7 @@ Graph new_graph(int vertices, Bool is_oriented)
 		fprintf(element->graph_file, "digraph my_graph\n{\n");
 	else
 		fprintf(element->graph_file, "graph my_graph\n{\n");
-	*/
+*/
 	return element;
 }
 
@@ -116,13 +121,12 @@ Node add_node(int x)
 */
 void add_edge(Graph g, int src, int dest)
 {
-	Node n = add_node(src);
+	//Node n = add_node(src);
 	Vector4_t branch;
 	Vector4_set(&branch, src, dest, Random_randRange(0, 1), 0);
 	ArrayList_add(g->liste_arc, (char *)&branch);
-
-	ArrayList_set(g->nodelist, src - 1, (char *)n);
-	free(n);
+	//ArrayList_set(g->nodelist, src - 1, (char *)n);
+	//free(n);
 
 }
 
@@ -222,17 +226,21 @@ int main(int argc, char const *argv[])
 	Node start, end;
 
 
-	Graph g = new_graph(30, false);
+	Graph g = new_graph(6, false);
 	int i, j = 2;
-	for (i = 1; i < 30; i++)
-	{
+	//for (i = 1; i < 30; i++)
+	//{
 		//printf("Doing it for %d times.\n", i);
-		add_edge(g, i, j);
+		//add_edge(g, 1, 2);
+		//add_edge(g, 1, 3);
+		////add_edge(g, 3, 4);
+		//add_edge(g, 4, 5);
+		//add_edge(g, 1, 0);
 		//printf("Then\n");
-		j++;
-	}
+	//	j++;
+	//}
 	
-	for (i = 1; i < 30; i++)
+	for (i = 1; i < 6; i++)
 	{
 		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);
 		start = (Node)ArrayList_get(g->nodelist,(int) arrete->x);

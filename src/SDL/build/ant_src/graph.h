@@ -16,6 +16,12 @@ typedef struct NodeListElement
 	//struct NodeListElement *listenode;
 } NodeListElement, *Node;
 
+struct fourmis_t
+{
+	int node ; 
+	ArrayList_t * tabou ; 
+};
+typedef struct fourmis_t fourmis_t ;
 /* Définition d'une liste d'ajdacence (tableau) 
 	typedef struct AdjencyListElement
 	{
@@ -27,7 +33,7 @@ typedef struct GraphElement
 {
 	Bool is_oriented;
 	int nb_vertices;
-	int *fourmis;
+	fourmis_t *fourmis;
 	ArrayList_t *liste_arc;
 	ArrayList_t *nodelist;
 	//AdjencyList tab_neighbours;
