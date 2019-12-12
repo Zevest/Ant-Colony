@@ -46,7 +46,6 @@ Graph new_graph(int vertices, Bool is_oriented)
 		fprintf(stderr, "Erreur : Probleme creation Graphe.\n");
 		exit(EXIT_FAILURE);
 	}
-/*
 	for(i = 1 ; i < element->nb_vertices + 1 ; i++)
 		element->tab_neighbours[i-1].begin = NULL;
 
@@ -232,6 +231,7 @@ int main(int argc, char const *argv[])
 		//printf("Then\n");
 		j++;
 	}
+	
 	for (i = 1; i < 30; i++)
 	{
 		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);

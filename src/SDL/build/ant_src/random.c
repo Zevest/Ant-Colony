@@ -4,7 +4,7 @@
 #include "arrayList.h"
 #include "random.h"
 
-#pragma startup __Random_init
+int __Random_initialized = 0;
 
 double map(double val, double minSrc, double maxSrc, double minDest, double maxDest)
 {
@@ -13,16 +13,21 @@ double map(double val, double minSrc, double maxSrc, double minDest, double maxD
 
 void __Random_init()
 {
+	__Random_initialized = 1;
     srand(time(NULL));
 }
 
 double Random_randRange(double minV, double maxV)
 {
+	if(!__Random_initialized)
+		__Random_init();
     return map(rand(), 0, RAND_MAX, minV, maxV);
 }
 
 int Random_weighted(double weights[], int len)
 {
+	if(!__Random_initialized)
+		__Random_init();
     float max = 0, v;
     int i, j;
     ArrayList_t *coeff, *index;
