@@ -1,6 +1,11 @@
 #include <stdio.h>
 #ifndef __ARRAYLIST_H__
-
+truct fourmis_t
+{
+	int node ; 
+	ArrayList_t * tabou ; 
+};
+typedef struct fourmis_t fourmis_t ;
 typedef struct ArrayList
 {
     size_t __item_size, count, __size;

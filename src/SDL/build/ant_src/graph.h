@@ -37,7 +37,7 @@ typedef struct GraphElement
 	ArrayList_t *liste_arc;
 	ArrayList_t *nodelist;
 	//AdjencyList tab_neighbours;
-	FILE *graph_file;
+	//FILE *graph_file;
 } GraphElement, *Graph;
 
 /* Prototypes */

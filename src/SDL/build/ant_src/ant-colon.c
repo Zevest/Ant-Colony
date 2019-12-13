@@ -15,7 +15,7 @@ ArrayList_t *chemin_connecte(graph g , int node){
 		vector4_t branch = *(vector4_t *) Arraylist_get(g->liste_arc,i);
 		if(branch.x==node || branch.y==node){
 			ArrayList_add(g->liste_arc,(char*)&branch);
-		}
+	
 
 	}
 return chemins;
