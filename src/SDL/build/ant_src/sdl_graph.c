@@ -5,7 +5,7 @@
 #include "graph.h"
 #include "random.h"
 
-const int SCREEN_WIDTH = 640, SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
 const char ressourcesPath[] = "rsc";
 void logSDLError(FILE * os, const char* msg){
 	fprintf(os, "%s error: %s\n", msg, SDL_GetError());
@@ -70,7 +70,7 @@ void circle(SDL_Renderer * renderer, double x, double y, double r){
 
 void drawGraph(SDL_Renderer * renderer, Graph g){
 	int i;
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	for (i = 0; i < g->liste_arc->count; ++i)
 	{
 		
@@ -83,22 +83,9 @@ void drawGraph(SDL_Renderer * renderer, Graph g){
 			map(end->pos.x,0, 30, 0, SCREEN_WIDTH),
 			map(end->pos.y,0, 30, 0, SCREEN_HEIGHT)
 			);
-		SDL_RenderDrawLine(renderer,
-			map(start->pos.x,0, 30, 0, SCREEN_WIDTH),
-			map(start->pos.y,0, 30, 0, SCREEN_HEIGHT),
-			map(end->pos.x,0, 30, 0, SCREEN_WIDTH),
-			map(end->pos.y,0, 30, 0, SCREEN_HEIGHT)
-			);
-		SDL_RenderDrawLine(renderer,
-			map(start->pos.x,0, 30, 0, SCREEN_WIDTH),
-			map(start->pos.y,0, 30, 0, SCREEN_HEIGHT),
-			map(end->pos.x,0, 30, 0, SCREEN_WIDTH),
-			map(end->pos.y,0, 30, 0, SCREEN_HEIGHT)
-			);
-		
 		//printf("Arrête(%d, %d)\n	distance: %0.3f\n	phéromone: %0.3f\n", (int)branch.x, (int)branch.y, branch.w, branch.z);
 	}
-	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+	
 	for (i = 1; i < g->nb_vertices + 1; i++)
 	{
 		Node n = (Node)ArrayList_get(g->nodelist, i - 1);
@@ -107,6 +94,9 @@ void drawGraph(SDL_Renderer * renderer, Graph g){
 		{
 			double posX = map(n->pos.x, 0, 30, 0, SCREEN_WIDTH);
 			double posY = map(n->pos.y, 0, 30, 0, SCREEN_HEIGHT);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			circle(renderer,posX,posY,80);
+			SDL_SetRenderDrawColor(renderer, 0, 175, 255, 255);
 			circle(renderer,posX,posY,50);
 		}
 		else
@@ -126,18 +116,24 @@ int main(int argc, char** argv){
 	Vector4_t *arrete;
 	Node start, end;
 
-	int total = 5;
+	int total = 30;
 	Graph g = new_graph(total, false);
 	int i, j = 2;
+
+	for(i = 0; i < total; ++i){
+		for(j = i+1; j < total; ++j){
+			add_edge(g, i, j);
+		}
+	}
 
 	//for (i = 1; i < total; i++)
 	//{
 		//printf("Doing it for %d times.\n", i);
 		//add_edge(g, i, j);
-		add_edge(g, 1, 2);
-		add_edge(g, 1, 3);
-		add_edge(g, 1, 4);
-		add_edge(g, 1, 0);
+		//add_edge(g, 1, 2);
+		//add_edge(g, 1, 3);
+		//add_edge(g, 1, 4);
+		//add_edge(g, 1, 0);
 		//add_edge(g, 1, 0);
 		//printf("Then\n");
 		//j++;
@@ -175,7 +171,7 @@ int main(int argc, char** argv){
 		logSDLError(stdout,"SDL_Init");
 		return 1;
 	}
-	SDL_Window *window= SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+	SDL_Window *window= SDL_CreateWindow("Hello World!", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (window == NULL){
 		logSDLError(stdout,"SDL_CreateWindow");
 		SDL_Quit();
@@ -220,7 +216,7 @@ int main(int argc, char** argv){
 			exit = true;
 			break;
 		}
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
 		drawGraph(renderer, g);
 		SDL_RenderPresent(renderer);

@@ -31,7 +31,6 @@ typedef struct fourmis_t fourmis_t ;
 	 Définition d'un Graphe */
 typedef struct GraphElement
 {
-	Bool is_oriented;
 	int nb_vertices;
 	fourmis_t *fourmis;
 	ArrayList_t *liste_arc;
@@ -41,12 +40,11 @@ typedef struct GraphElement
 } GraphElement, *Graph;
 
 /* Prototypes */
-Graph new_graph(int vertices, Bool is_oriented);
+Graph new_graph(int vertices);
 Bool is_empty_graph(Graph g);
 Node add_node(int x);
 void add_edge(Graph g, int src, int dest);
 void print_graph(Graph g);
-void display_graph(Graph g);
 void erase_graph(Graph g);
 
 #define __GRAPH_H__

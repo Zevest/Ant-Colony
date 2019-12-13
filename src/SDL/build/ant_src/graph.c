@@ -11,7 +11,7 @@
 * is_oriented Est-ce un graphe orienté ou non-orienté ?
 * return Le graphe créé
 */
-Graph new_graph(int vertices, Bool is_oriented)
+Graph new_graph(int vertices)
 {
 
 	int i;
@@ -24,7 +24,6 @@ Graph new_graph(int vertices, Bool is_oriented)
 		exit(EXIT_FAILURE);
 	}
 	element->fourmis = malloc(2 * vertices * sizeof *element->fourmis);
-	element->is_oriented = is_oriented;
 	element->nb_vertices = vertices;
 	element->liste_arc = ArrayList_new(sizeof(Vector4_t));
 	element->nodelist = ArrayList_new(sizeof(NodeListElement));
@@ -83,6 +82,10 @@ Node add_node(int x)
 	return n;
 }
 
+void graph_free(Graph g){
+
+}
+
 /*----------------------------------------------------------------------------------------------*/
 
 /**
@@ -132,42 +135,13 @@ void print_graph(Graph g)
 /**
 * Supprime un Graphe
 * @param g Le Graphe
-*
+*/
 void erase_graph(Graph g){
-		int i;
-	if(is_empty_graph(g))
-	{
-		printf("Rien a effacer, le Graphe n'existe pas.\n");
-		return;
-	}
-
-	//Si il existe des sommets 
-	if(g->nodelist)
-	{
-
-		for(i = 1 ; i < g->nb_vertices + 1 ; i++)
-		{
-			Node n = g->nodelist[i-1];
-			
-			while(n != NULL)
-			{
-				Node tmp = n;
-				n = n->next;
-				free(tmp);
-			}
-		}
-
-		//Libération de la liste d'adjacence
-		free(g->tab_neighbours);
-	}
-
-	//Fin et fermeture du fichier Graphviz
-	fprintf(g->graph_file, "}\n");
-	fclose(g->graph_file);
-
-	//Libération du Graphe de la mémoire
+	ArrayList_destroy(g->nodelist);
+	ArrayList_destroy(g->liste_arc);
+	free(g->fourmis);
 	free(g);
-}*/
+}
 
 
 #ifdef __GRAPH_DEBUG
