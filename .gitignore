@@ -1,2 +1,9 @@
 *.o
+.vscode/
+build/ant_colony
+src/SDL/aclocal.m4
+.gitignore
+src/SDL/build/ant_src/app2
+src/SDL/build/ant_src/app
+build/app
 
