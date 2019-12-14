@@ -51,7 +51,6 @@ int Random_weighted(double weights[], int len)
         }
     }
     i = *(int *)ArrayList_get(index, Random_randRange(0, index->count));
-    ArrayList_print(coeff, ArrayList_printDouble);
     ArrayList_destroy(index);
     ArrayList_destroy(coeff);
     return i;

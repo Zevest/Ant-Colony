@@ -117,7 +117,7 @@ int main(int argc, char** argv){
 	Node start, end;
 
 	int total = 30;
-	Graph g = new_graph(total, false);
+	Graph g = new_graph(total);
 	int i, j = 2;
 
 	for(i = 0; i < total; ++i){
@@ -139,7 +139,7 @@ int main(int argc, char** argv){
 		//j++;
 	//}
 	
-	for (i = 1; i < g->liste_arc->count; i++)
+	for (i = 0; i < g->liste_arc->count; i++)
 	{
 		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);
 		start = (Node)ArrayList_get(g->nodelist,(int) arrete->x);

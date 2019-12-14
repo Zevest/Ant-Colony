@@ -32,12 +32,13 @@ Graph new_graph(int vertices)
 	{
 		Node n = add_node(i) ;
 		ArrayList_add(element->nodelist,(char *)n);
+		free(n);
 		element->fourmis[2 * i].node = i;
 		element->fourmis[2 * i + 1].node = i;
 		element->fourmis[2 * i].tabou = ArrayList_new(sizeof i);
 		element->fourmis[2 * i + 1].tabou = ArrayList_new(sizeof i);
-		ArrayList_add(element->fourmis[2*i].tabou,(char*) &i);
-		ArrayList_add(element->fourmis[2*i+1].tabou,(char*) &i);
+		//ArrayList_add(element->fourmis[2*i].tabou,(char*) &i);
+		//ArrayList_add(element->fourmis[2*i+1].tabou,(char*) &i);
 		
 	}
 	
@@ -139,6 +140,9 @@ void print_graph(Graph g)
 void erase_graph(Graph g){
 	ArrayList_destroy(g->nodelist);
 	ArrayList_destroy(g->liste_arc);
+	int i;
+	for(i = 0; i < g->nb_vertices*2; ++i)
+		ArrayList_destroy((g->fourmis+i)->tabou);
 	free(g->fourmis);
 	free(g);
 }
@@ -151,12 +155,14 @@ int main(int argc, char const *argv[])
 	Node start, end;
 	Graph g = new_graph(6, false);
 	int i, j = 2;
-	for (i = 1; i < 6; i++)
+	for (i = 0; i < 6; i++)
 	{
+
 		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);
 		start = (Node)ArrayList_get(g->nodelist,(int) arrete->x);
 		end = (Node)ArrayList_get(g->nodelist,(int) arrete->y);
 		arrete->w = Vector2_dist(&start->pos, &end->pos);
+		printf("Setting val for arrete[%d] to %f", i, Vector2_dist(&start->pos, &end->pos));
 		//Vector4_set(arrete, arrete->x, arrete->y, arrete->z, dist);		
 		
 	}

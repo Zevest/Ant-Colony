@@ -30,11 +30,11 @@ int ArrayList_indexOf(ArrayList_t *array, char *val, Comparator comp);
 int ArrayList_removeValue(ArrayList_t *array, char *val, Comparator comp);
 int ArrayList_containValue(ArrayList_t *array, char *val, Comparator comp);
 
-int ArraryList_shortComparator(char *a, char *b);
-int ArraryList_intComparator(char *a, char *b);
-int ArraryList_longComparator(char *a, char *b);
-int ArraryList_floatComparator(char *a, char *b);
-int ArraryList_doubleComparator(char *a, char *b);
+int ArrayList_shortComparator(char *a, char *b);
+int ArrayList_intComparator(char *a, char *b);
+int ArrayList_longComparator(char *a, char *b);
+int ArrayList_floatComparator(char *a, char *b);
+int ArrayList_doubleComparator(char *a, char *b);
 
 void ArrayList_printShort(char *val);
 void ArrayList_printInt(char *val);
