@@ -10,7 +10,7 @@ typedef struct ArrayList
 
 typedef void (*Printer)(char *);
 
-typedef int (*Equals)(char *, char *);
+typedef int (*Comparator)(char *, char *);
 
 ArrayList_t *ArrayList_new(size_t __size);
 void ArrayList_destroy(ArrayList_t *array);
@@ -26,9 +26,21 @@ void ArrayList_set(ArrayList_t *array, int index, char *val);
 void ArrayList_print(ArrayList_t *array, Printer print);
 
 int ArrayList_removeIndex(ArrayList_t *array, int index);
-int ArrayList_indexOf(ArrayList_t *array, char *val, Equals equal);
-int ArrayList_removeValue(ArrayList_t *array, char *val, Equals equal);
-int ArrayList_containValue(ArrayList_t *array, char *val, Equals equal);
+int ArrayList_indexOf(ArrayList_t *array, char *val, Comparator comp);
+int ArrayList_removeValue(ArrayList_t *array, char *val, Comparator comp);
+int ArrayList_containValue(ArrayList_t *array, char *val, Comparator comp);
+
+int ArraryList_shortComparator(char *a, char *b);
+int ArraryList_intComparator(char *a, char *b);
+int ArraryList_longComparator(char *a, char *b);
+int ArraryList_floatComparator(char *a, char *b);
+int ArraryList_doubleComparator(char *a, char *b);
+
+void ArrayList_printShort(char *val);
+void ArrayList_printInt(char *val);
+void ArrayList_printLong(char *val);
+void ArrayList_printFloat(char *val);
+void ArrayList_printDouble(char *val);
 
 #define __ARRAYLIST_H__
 #endif // !_ARRAYLIST_H

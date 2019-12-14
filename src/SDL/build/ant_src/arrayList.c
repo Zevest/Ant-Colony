@@ -119,24 +119,24 @@ int ArrayList_removeIndex(ArrayList_t *array, int index)
     return 0;
 }
 
-int ArrayList_indexOf(ArrayList_t *array, char *val, Equals equal)
+int ArrayList_indexOf(ArrayList_t *array, char *val, Comparator comp)
 {
     assert(array);
     assert(array->data);
     int i;
     for (i = 0; i < array->count; i++)
     {
-        if (equal(val, ArrayList_get(array, i)))
+        if (comp(val, ArrayList_get(array, i)) == 0)
             return i;
     }
     return -1;
 }
 
-int ArrayList_removeValue(ArrayList_t *array, char *val, Equals equal)
+int ArrayList_removeValue(ArrayList_t *array, char *val, Comparator comp)
 {
     assert(array);
     assert(array->data);
-    int i = ArrayList_indexOf(array, val, equal);
+    int i = ArrayList_indexOf(array, val, comp);
     if (__ArrayList_containIndex(array, i))
     {
         ArrayList_removeIndex(array, i);
@@ -145,18 +145,60 @@ int ArrayList_removeValue(ArrayList_t *array, char *val, Equals equal)
     return 1;
 }
 
-int ArrayList_containValue(ArrayList_t *array, char *val, Equals equal)
+int ArrayList_containValue(ArrayList_t *array, char *val, Comparator comp)
 {
     assert(array);
     assert(array->data);
-    return ArrayList_indexOf(array, val, equal) != -1;
+    return ArrayList_indexOf(array, val, comp) != -1;
 }
 
-#ifdef __ARRAYLIST_DEBUG
-void printInt(char *val)
+int ArraryList_shortComparator(char *a, char *b)
+{
+    return (*(short *)a - *(short *)b);
+}
+
+int ArraryList_intComparator(char *a, char *b)
+{
+    return (*(int *)a - *(int *)b);
+}
+
+int ArraryList_longComparator(char *a, char *b)
+{
+    return (*(int *)a - *(int *)b);
+}
+int ArraryList_floatComparator(char *a, char *b)
+{
+    return (*(int *)a - *(int *)b);
+}
+
+int ArraryList_doubleComparator(char *a, char *b)
+{
+    return (*(int *)a - *(int *)b);
+}
+
+void ArrayList_printShort(char *val)
+{
+    printf("%d", *(short *)val);
+}
+void ArrayList_printInt(char *val)
 {
     printf("%d", *(int *)val);
 }
+void ArrayList_printLong(char *val)
+{
+    printf("%ld", *(long *)val);
+}
+void ArrayList_printFloat(char *val)
+{
+    printf("%0.3f", *(float *)val);
+}
+void ArrayList_printDouble(char *val)
+{
+    printf("%0.6f", *(double *)val);
+}
+
+#ifdef __ARRAYLIST_DEBUG
+
 
 void printDouble(char *val)
 {

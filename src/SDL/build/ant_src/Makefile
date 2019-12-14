@@ -6,9 +6,9 @@ LIBS = -lm
 DIR = 
 SRC = graph.c arrayList.c random.c vector.c
 MAIN = sdl_graph.c
-BUILD = 
+BUILD = ./
 OBJ = $(SRC:.c=.o)
-EXEC = ./app
+EXEC = app
 
 all:	$(BUILD)$(EXEC) test clean
 
