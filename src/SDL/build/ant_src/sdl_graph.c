@@ -240,6 +240,7 @@ int main(int argc, char **argv)
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
 		drawGraph(renderer, g);
+		drawBestGraphPath(renderer, g, shortest);
 		SDL_RenderPresent(renderer);
 	}
 
