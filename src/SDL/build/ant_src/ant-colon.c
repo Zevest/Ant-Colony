@@ -12,6 +12,8 @@ void print_branch(char *b)
 	printf("node(%.0f -> %.0f) len %.3f pheromone %.3f\n", branch->x, branch->y, branch->w, branch->z);
 }
 
+void printPath(Graph g, ArrayList_t *path);
+
 int BranchCompar(char *a, char *b)
 {
 	Vector4_t *branchA = (Vector4_t *)a;
@@ -49,7 +51,7 @@ void deplace_fourmis(Graph g, int nodeNum, int *count)
 	int j, i, choosed_number = 0, antNum = g->antPerNode * nodeNum, oldNode, index = 0;
 	ArrayList_t *validPath;
 	Vector4_t *tmp = NULL;
-	double *weights;
+	double *weights = NULL;
 	weights = malloc(g->nodelist->count * sizeof *weights);
 	for (i = 0; i < g->nodelist->count; weights[i++] = 0)
 		;
@@ -60,31 +62,29 @@ void deplace_fourmis(Graph g, int nodeNum, int *count)
 		//ArrayList_print((g->fourmis + antNum + j)->tabou, ArrayList_printInt);
 		if (validPath->count > 0)
 		{ // si il existe un chemin
-			//weights =
 			for (i = 0; i < validPath->count; ++i)
 			{
-
-				//if (i < 0 || i > validPath->count)
-				//printf("%d,", i);
 				tmp = (Vector4_t *)ArrayList_get(validPath, i);
 				double nWeight = tmp->z / pow(tmp->w, 7) * 1000;
 				weights[i] = nWeight;
 			}
 			choosed_number = Random_weighted(weights, validPath->count);
-			if (choosed_number >= 0)
-			{
-				tmp = (Vector4_t *)ArrayList_get(validPath, choosed_number);
-				index = ArrayList_indexOf(g->liste_arc, (char *)tmp, BranchCompar);
-				if (index >= 0 && index < g->liste_arc->count)
-					++count[index];
-				oldNode = g->fourmis[antNum + j].node;
-				ArrayList_add((g->fourmis + antNum + j)->tabou, (char *)&oldNode);
-				if (oldNode == (int)tmp->x)
-					g->fourmis[antNum + j].node = (int)tmp->y;
-				else
-					g->fourmis[antNum + j].node = (int)tmp->x;
-			}
-			//printf("moved Ant %d from %d to %d\n", antNum + j, oldNode, g->fourmis[antNum + j].node);
+			//if (choosed_number >= 0)
+			//{
+			tmp = (Vector4_t *)ArrayList_get(validPath, choosed_number);
+			//printf("tmp(%f, %f)\n", tmp->x, tmp->y);
+			index = ArrayList_indexOf(g->liste_arc, (char *)tmp, BranchCompar);
+			if (index >= 0 && index < g->liste_arc->count)
+				++count[index];
+			oldNode = g->fourmis[antNum + j].node;
+			ArrayList_add((g->fourmis + antNum + j)->tabou, (char *)&oldNode);
+			if (oldNode == (int)tmp->x)
+				g->fourmis[antNum + j].node = (int)tmp->y;
+			else
+				g->fourmis[antNum + j].node = (int)tmp->x;
+			//}
+			//if (antNum + j == 0)
+			//	printf("moved Ant %d from %d to %d\n", antNum + j, oldNode, g->fourmis[antNum + j].node);
 		}
 		ArrayList_destroy(validPath);
 	}
@@ -94,38 +94,43 @@ void deplace_fourmis(Graph g, int nodeNum, int *count)
 
 double calDist(ArrayList_t *branch, ArrayList_t *path)
 {
-	int *pathPoints, i;
+	int *pathPoints, i, index;
 	Vector4_t *tmp = NULL;
 	double sum = 0;
 	//printf("Got Path: %ld %ld\n", branch->count, path->count);
-	for (i = 0, pathPoints = (int *)ArrayList_get(path, 0); i < path->count; ++pathPoints, ++i)
+	for (i = 0, pathPoints = (int *)ArrayList_get(path, 0); i < path->count - 1; ++pathPoints, ++i)
 	{
-		tmp = (Vector4_t *)ArrayList_get(branch, *pathPoints);
+		Vector4_t nPath = {*pathPoints, *(pathPoints + 1), 0, 0};
+		index = ArrayList_indexOf(branch, (char *)&nPath, BranchCompar);
+		//printf("[%d](%d, %d) ", index, (int)nPath.x, (int)nPath.y);
+		tmp = (Vector4_t *)ArrayList_get(branch, index);
 		sum += tmp->w;
 		//printf("tmp->w %f\n", tmp->w);
 	}
+	//printf("\n");
 	//printf("ouf\n");
 	return sum;
 }
 
 int get_shortest_path_index(Graph g)
 {
-	int bestIndex = 0, i, j, *tabou;
+	int bestIndex = 0, i, *tabou;
 	Bool done = false;
 	double minSum = INFINITY, sum;
-	Vector4_t *tmp;
-	for (j = 0; j < g->nb_vertices * g->antPerNode; ++j)
+	for (i = 0; i < g->nb_vertices * g->antPerNode; ++i)
 	{
 		sum = 0;
-		if (g->fourmis[j].tabou->count >= g->nodelist->count - 1)
+		if (g->fourmis[i].tabou->count >= g->nodelist->count - 1)
 		{
 			done = true;
-			sum = calDist(g->liste_arc, (g->fourmis + j)->tabou);
+			//printf("Ant %d: \n", i);
+			//printPath(g, (g->fourmis + i)->tabou);
+			sum = calDist(g->liste_arc, (g->fourmis + i)->tabou);
 
 			if (sum < minSum)
 			{
 				minSum = sum;
-				bestIndex = j;
+				bestIndex = i;
 			}
 		}
 	}
@@ -135,6 +140,22 @@ int get_shortest_path_index(Graph g)
 		printf("Error: Aucune fourmis n'a parcourrus tout le graphe\n");
 	}
 	return bestIndex;
+}
+
+void printPath(Graph g, ArrayList_t *path)
+{
+	int i;
+	int *tmp = NULL;
+	Vector4_t branch;
+	for (i = 0; i < path->count; ++i)
+	{
+		tmp = (int *)ArrayList_get(path, i);
+		ArrayList_print(path, ArrayList_printInt);
+		branch = *(Vector4_t *)ArrayList_get(g->liste_arc, *tmp);
+		//start = (Node)ArrayList_get(g->nodelist, (int)branch.x);
+		//end = (Node)ArrayList_get(g->nodelist, (int)branch.y);
+		//printf("Path %d from %d to %d\n",i,*tmp, (int)branch.x, (int)branch.y);
+	}
 }
 
 ArrayList_t *antColony(Graph g, int gen)
@@ -212,7 +233,7 @@ int main()
 	Vector4_t *arrete;
 	Node start, end;
 	ArrayList_t *shortest;
-	int total = 30;
+	int total = 5;
 	Graph g = new_graph(total, 2);
 	int i, j = 2;
 
@@ -231,10 +252,42 @@ int main()
 		end = (Node)ArrayList_get(g->nodelist, (int)arrete->y);
 		arrete->w = Vector2_dist(&start->pos, &end->pos);
 	}
-
+	// ArrayList_t *tmpdf = ArrayList_new(sizeof(int));
+	// for (i = 0; i < g->nb_vertices; ++i)
+	// {
+	// 	shortest = chemin_connecte(g, i, tmpdf);
+	// 	Vector4_t b;
+	// 	for (j = 0; j < shortest->count; ++j)
+	// 	{
+	// 		b = *(Vector4_t *)ArrayList_get(shortest, j);
+	// 		printf("(%d, %d) ", (int)b.x, (int)b.y);
+	// 	}
+	// 	int t = (int)b.x;
+	// 	ArrayList_add(tmpdf, (char *)&t);
+	// 	printf("\n");
+	// }
+	// ArrayList_destroy(tmpdf);
 	shortest = antColony(g, 40);
-	print_graph(g);
+	//printf("\n");
+	int *tmp = NULL;
+	Vector4_t branch;
+	for (i = 0; i < shortest->count; ++i)
+	{
+		tmp = (int *)ArrayList_get(shortest, i);
+		branch = *(Vector4_t *)ArrayList_get(g->liste_arc, *tmp);
+		//start = (Node)ArrayList_get(g->nodelist, (int)branch.x);
+		//end = (Node)ArrayList_get(g->nodelist, (int)branch.y);
+		//printf("Path to from %d to %d\n", (int)branch.x, (int)branch.y);
+	}
+	//print_graph(g);
 	printf("Meilleur Chemin: ");
+	int *pathPoints = NULL, index = 0;
+	for (i = 0, pathPoints = (int *)shortest->data; i < shortest->count - 1; ++pathPoints, ++i)
+	{
+		Vector4_t nPath = {*pathPoints, *(pathPoints + 1), 0, 0};
+		index = ArrayList_indexOf(g->liste_arc, (char *)&nPath, BranchCompar);
+		printf("[%d](%d, %d) ", index, (int)nPath.x, (int)nPath.y);
+	}
 	ArrayList_print(shortest, ArrayList_printInt);
 	ArrayList_destroy(shortest);
 	erase_graph(g);

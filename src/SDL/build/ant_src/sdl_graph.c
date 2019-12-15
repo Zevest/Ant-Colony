@@ -79,14 +79,23 @@ void circle(SDL_Renderer *renderer, double x, double y, double r)
 void drawBestGraphPath(SDL_Renderer *renderer, Graph g, ArrayList_t *path)
 {
 
-	int i, *tmp;
+	int i, *tmp = NULL, *pathPoints = NULL, index = 0;
 	double posX, posY;
-	Vector4_t branch = NULL;
+	Vector4_t branch;
 	Node start = NULL, end = NULL;
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	for (i = 0; i < path->count; ++i)
+	/*for (i = 0, pathPoints = (int *)shortest->data; i < shortest->count - 1; ++pathPoints, ++i)
 	{
-		tmp = (int *)ArrayList_get(path, i);
+		Vector4_t nPath = {*pathPoints, *(pathPoints + 1), 0, 0};
+		index = ArrayList_indexOf(g->liste_arc, (char *)&nPath, BranchCompar);
+		printf("[%d](%d, %d) ", index, (int)nPath.x, (int)nPath.y);
+	}*/
+
+	for (i = 0, pathPoints = (int *)path->data; i < path->count; ++pathPoints, ++i)
+	{
+		Vector4_t nPath = {*pathPoints, *(pathPoints + 1), 0, 0};
+		index = ArrayList_indexOf(g->liste_arc, (char *)&nPath, BranchCompar);
+		tmp = (int *)ArrayList_get(path, index);
 		branch = *(Vector4_t *)ArrayList_get(g->liste_arc, *tmp);
 		start = (Node)ArrayList_get(g->nodelist, (int)branch.x);
 		end = (Node)ArrayList_get(g->nodelist, (int)branch.y);
@@ -101,7 +110,7 @@ void drawBestGraphPath(SDL_Renderer *renderer, Graph g, ArrayList_t *path)
 	{
 		start = (Node)ArrayList_get(g->nodelist, i - 1);
 		//printf("(%d): ", i);
-		if (n != NULL)
+		if (start != NULL)
 		{
 			posX = map(start->pos.x, 0, 30, 0, SCREEN_WIDTH);
 			posY = map(start->pos.y, 0, 30, 0, SCREEN_HEIGHT);
@@ -190,7 +199,7 @@ int main(int argc, char **argv)
 		logSDLError(stdout, "SDL_Init");
 		return 1;
 	}
-	SDL_Window *window = SDL_CreateWindow("Hello World!", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL_Window *window = SDL_CreateWindow("Ant Colony", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (window == NULL)
 	{
 		logSDLError(stdout, "SDL_CreateWindow");
