@@ -114,7 +114,7 @@ double calDist(ArrayList_t *branch, ArrayList_t *path)
 
 int get_shortest_path_index(Graph g)
 {
-	int bestIndex = 0, i, *tabou;
+	int bestIndex = 0, i;
 	Bool done = false;
 	double minSum = INFINITY, sum;
 	for (i = 0; i < g->nb_vertices * g->antPerNode; ++i)
@@ -145,16 +145,18 @@ int get_shortest_path_index(Graph g)
 void printPath(Graph g, ArrayList_t *path)
 {
 	int i;
-	int *tmp = NULL;
-	Vector4_t branch;
-	for (i = 0; i < path->count; ++i)
+	int *tmp = NULL, index;
+	Vector4_t branch, nPath;
+	for (i = 0, tmp = (int *)path->data; i < path->count - 1; ++tmp, ++i)
 	{
-		tmp = (int *)ArrayList_get(path, i);
-		ArrayList_print(path, ArrayList_printInt);
-		branch = *(Vector4_t *)ArrayList_get(g->liste_arc, *tmp);
+		//ArrayList_print(path, ArrayList_printInt);
+		nPath.x = *tmp;
+		nPath.y = *(tmp + 1);
+		index = ArrayList_indexOf(g->liste_arc, (char *)&nPath, BranchCompar);
+		branch = *(Vector4_t *)ArrayList_get(g->liste_arc, index);
 		//start = (Node)ArrayList_get(g->nodelist, (int)branch.x);
 		//end = (Node)ArrayList_get(g->nodelist, (int)branch.y);
-		//printf("Path %d from %d to %d\n",i,*tmp, (int)branch.x, (int)branch.y);
+		printf("Path %d from %d to %d\n", index, (int)branch.x, (int)branch.y);
 	}
 }
 
@@ -227,6 +229,36 @@ ArrayList_t *antColony(Graph g, int gen)
 	return record;
 }
 
+void testSDLwWithout(Graph g, ArrayList_t *path)
+{
+	int i, *tmp = NULL, *pathPoints = NULL;
+	Node start = NULL, end = NULL;
+	//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+	for (i = 0, pathPoints = (int *)path->data; i < path->count; ++pathPoints, ++i)
+	{
+		if (i == path->count - 1)
+		{
+			printf("(%d, %d)", *pathPoints, *(int *)path->data);
+			start = (Node)ArrayList_get(g->nodelist, *pathPoints);
+			end = (Node)ArrayList_get(g->nodelist, *(int *)path->data);
+		}
+		else
+		{
+			printf("(%d, %d)", *pathPoints, *(pathPoints + 1));
+			start = (Node)ArrayList_get(g->nodelist, *pathPoints);
+			end = (Node)ArrayList_get(g->nodelist, *(pathPoints + 1));
+		}
+
+		/*SDL_RenderDrawLine(renderer,
+							   map(start->pos.x, 0, 30, 0, SCREEN_WIDTH),
+							   map(start->pos.y, 0, 30, 0, SCREEN_HEIGHT),
+							   map(end->pos.x, 0, 30, 0, SCREEN_WIDTH),
+							   map(end->pos.y, 0, 30, 0, SCREEN_HEIGHT));*/
+	}
+	printf("\n");
+}
+
 #ifdef __ANT_COLON_DEBUG
 int main()
 {
@@ -271,23 +303,24 @@ int main()
 	//printf("\n");
 	int *tmp = NULL;
 	Vector4_t branch;
-	for (i = 0; i < shortest->count; ++i)
+	testSDLwWithout(g, shortest);
+	/*for (i = 0; i < shortest->count; ++i)
 	{
 		tmp = (int *)ArrayList_get(shortest, i);
 		branch = *(Vector4_t *)ArrayList_get(g->liste_arc, *tmp);
 		//start = (Node)ArrayList_get(g->nodelist, (int)branch.x);
 		//end = (Node)ArrayList_get(g->nodelist, (int)branch.y);
 		//printf("Path to from %d to %d\n", (int)branch.x, (int)branch.y);
-	}
+	}*/
 	//print_graph(g);
 	printf("Meilleur Chemin: ");
-	int *pathPoints = NULL, index = 0;
+	/*int *pathPoints = NULL, index = 0;
 	for (i = 0, pathPoints = (int *)shortest->data; i < shortest->count - 1; ++pathPoints, ++i)
 	{
 		Vector4_t nPath = {*pathPoints, *(pathPoints + 1), 0, 0};
 		index = ArrayList_indexOf(g->liste_arc, (char *)&nPath, BranchCompar);
 		printf("[%d](%d, %d) ", index, (int)nPath.x, (int)nPath.y);
-	}
+	}*/
 	ArrayList_print(shortest, ArrayList_printInt);
 	ArrayList_destroy(shortest);
 	erase_graph(g);

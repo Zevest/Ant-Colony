@@ -81,24 +81,24 @@ void drawBestGraphPath(SDL_Renderer *renderer, Graph g, ArrayList_t *path)
 
 	int i, *tmp = NULL, *pathPoints = NULL, index = 0;
 	double posX, posY;
-	Vector4_t branch;
 	Node start = NULL, end = NULL;
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	/*for (i = 0, pathPoints = (int *)shortest->data; i < shortest->count - 1; ++pathPoints, ++i)
-	{
-		Vector4_t nPath = {*pathPoints, *(pathPoints + 1), 0, 0};
-		index = ArrayList_indexOf(g->liste_arc, (char *)&nPath, BranchCompar);
-		printf("[%d](%d, %d) ", index, (int)nPath.x, (int)nPath.y);
-	}*/
 
 	for (i = 0, pathPoints = (int *)path->data; i < path->count; ++pathPoints, ++i)
 	{
-		Vector4_t nPath = {*pathPoints, *(pathPoints + 1), 0, 0};
-		index = ArrayList_indexOf(g->liste_arc, (char *)&nPath, BranchCompar);
-		tmp = (int *)ArrayList_get(path, index);
-		branch = *(Vector4_t *)ArrayList_get(g->liste_arc, *tmp);
-		start = (Node)ArrayList_get(g->nodelist, (int)branch.x);
-		end = (Node)ArrayList_get(g->nodelist, (int)branch.y);
+		if (i == path->count - 1)
+		{
+			printf("(%d, %d)", *pathPoints, *(int *)path->data);
+			start = (Node)ArrayList_get(g->nodelist, *pathPoints);
+			end = (Node)ArrayList_get(g->nodelist, *(int *)path->data);
+		}
+		else
+		{
+			printf("(%d, %d)", *pathPoints, *(pathPoints + 1));
+			start = (Node)ArrayList_get(g->nodelist, *pathPoints);
+			end = (Node)ArrayList_get(g->nodelist, *(pathPoints + 1));
+		}
+
 		SDL_RenderDrawLine(renderer,
 						   map(start->pos.x, 0, 30, 0, SCREEN_WIDTH),
 						   map(start->pos.y, 0, 30, 0, SCREEN_HEIGHT),
@@ -106,9 +106,9 @@ void drawBestGraphPath(SDL_Renderer *renderer, Graph g, ArrayList_t *path)
 						   map(end->pos.y, 0, 30, 0, SCREEN_HEIGHT));
 	}
 
-	for (i = 1; i < g->nb_vertices + 1; i++)
+	for (i = 0; i < g->nb_vertices; i++)
 	{
-		start = (Node)ArrayList_get(g->nodelist, i - 1);
+		start = (Node)ArrayList_get(g->nodelist, i);
 		//printf("(%d): ", i);
 		if (start != NULL)
 		{
