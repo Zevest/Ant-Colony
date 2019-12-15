@@ -13,15 +13,17 @@ typedef void (*Printer)(char *);
 typedef int (*Comparator)(char *, char *);
 
 ArrayList_t *ArrayList_new(size_t __size);
+ArrayList_t *ArrayList_copy(ArrayList_t *array);
+
 void ArrayList_destroy(ArrayList_t *array);
 int __ArrayListGrow(ArrayList_t *array);
-int __ArrayList_containIndex(ArrayList_t *array, int index);
+int __ArrayList_containIndex(ArrayList_t *array, size_t index);
 
 void ArrayList_add(ArrayList_t *array, char *val);
-void ArrayList_insert(ArrayList_t *array, int index, char *val);
+void ArrayList_insert(ArrayList_t *array, size_t index, char *val);
 
-char *ArrayList_get(ArrayList_t *array, int index);
-void ArrayList_set(ArrayList_t *array, int index, char *val);
+char *ArrayList_get(ArrayList_t *array, size_t index);
+void ArrayList_set(ArrayList_t *array, size_t index, char *val);
 
 void ArrayList_print(ArrayList_t *array, Printer print);
 

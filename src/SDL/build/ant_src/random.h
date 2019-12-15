@@ -6,7 +6,7 @@ void __Random_init();
 
 double Random_randRange(double minV, double maxV);
 
-int Random_weighted(double weights[], int len);
+int Random_weighted(double *weights, int len);
 
 #define __RANDOM_H__
 #endif // !__RANDOM_H__

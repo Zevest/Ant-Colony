@@ -11,10 +11,10 @@
 * is_oriented Est-ce un graphe orienté ou non-orienté ?
 * return Le graphe créé
 */
-Graph new_graph(int vertices)
+Graph new_graph(int vertices, int antPerNode)
 {
 
-	int i;
+	int i, j;
 
 	Graph element;
 	element = malloc(sizeof(*element));
@@ -23,25 +23,25 @@ Graph new_graph(int vertices)
 		fprintf(stderr, "Erreur : Probleme creation Graphe.\n");
 		exit(EXIT_FAILURE);
 	}
-	element->fourmis = malloc(2 * vertices * sizeof *element->fourmis);
+	element->antPerNode = antPerNode;
+	element->fourmis = malloc(element->antPerNode * vertices * sizeof *element->fourmis);
 	element->nb_vertices = vertices;
 	element->liste_arc = ArrayList_new(sizeof(Vector4_t));
 	element->nodelist = ArrayList_new(sizeof(NodeListElement));
 
 	for (i = 0; i < vertices; i++)
 	{
-		Node n = add_node(i) ;
-		ArrayList_add(element->nodelist,(char *)n);
+		Node n = add_node(i);
+		ArrayList_add(element->nodelist, (char *)n);
 		free(n);
-		element->fourmis[2 * i].node = i;
-		element->fourmis[2 * i + 1].node = i;
-		element->fourmis[2 * i].tabou = ArrayList_new(sizeof i);
-		element->fourmis[2 * i + 1].tabou = ArrayList_new(sizeof i);
-		//ArrayList_add(element->fourmis[2*i].tabou,(char*) &i);
-		//ArrayList_add(element->fourmis[2*i+1].tabou,(char*) &i);
-		
+		for (j = 0; j < element->antPerNode; ++j)
+		{
+			element->fourmis[element->antPerNode * i + j].node = i;
+			element->fourmis[element->antPerNode * i + j].tabou = ArrayList_new(sizeof i);
+		}
 	}
-	
+	//ArrayList_add(element->fourmis[2*i].tabou,(char*) &i);
+	//ArrayList_add(element->fourmis[2*i+1].tabou,(char*) &i);
 	return element;
 }
 
@@ -83,8 +83,8 @@ Node add_node(int x)
 	return n;
 }
 
-void graph_free(Graph g){
-
+void graph_free(Graph g)
+{
 }
 
 /*----------------------------------------------------------------------------------------------*/
@@ -129,24 +129,22 @@ void print_graph(Graph g)
 	}
 }
 
-
-
 /*----------------------------------------------------------------------------------------------*/
 
 /**
 * Supprime un Graphe
 * @param g Le Graphe
 */
-void erase_graph(Graph g){
+void erase_graph(Graph g)
+{
 	ArrayList_destroy(g->nodelist);
 	ArrayList_destroy(g->liste_arc);
 	int i;
-	for(i = 0; i < g->nb_vertices*2; ++i)
-		ArrayList_destroy((g->fourmis+i)->tabou);
+	for (i = 0; i < g->nb_vertices * g->antPerNode; ++i)
+		ArrayList_destroy((g->fourmis + i)->tabou);
 	free(g->fourmis);
 	free(g);
 }
-
 
 #ifdef __GRAPH_DEBUG
 int main(int argc, char const *argv[])
@@ -158,16 +156,15 @@ int main(int argc, char const *argv[])
 	for (i = 0; i < 6; i++)
 	{
 
-		arrete = (Vector4_t*)ArrayList_get(g->liste_arc, i);
-		start = (Node)ArrayList_get(g->nodelist,(int) arrete->x);
-		end = (Node)ArrayList_get(g->nodelist,(int) arrete->y);
+		arrete = (Vector4_t *)ArrayList_get(g->liste_arc, i);
+		start = (Node)ArrayList_get(g->nodelist, (int)arrete->x);
+		end = (Node)ArrayList_get(g->nodelist, (int)arrete->y);
 		arrete->w = Vector2_dist(&start->pos, &end->pos);
 		printf("Setting val for arrete[%d] to %f", i, Vector2_dist(&start->pos, &end->pos));
-		//Vector4_set(arrete, arrete->x, arrete->y, arrete->z, dist);		
-		
+		//Vector4_set(arrete, arrete->x, arrete->y, arrete->z, dist);
 	}
 	print_graph(g);
-	
+
 	ArrayList_destroy(g->nodelist);
 	ArrayList_destroy(g->liste_arc);
 	free(g->fourmis);

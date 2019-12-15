@@ -16,6 +16,18 @@ ArrayList_t *ArrayList_new(size_t __size)
     return array;
 }
 
+ArrayList_t *ArrayList_copy(ArrayList_t *array)
+{
+    int i;
+    ArrayList_t *cpy = ArrayList_new(array->__item_size);
+    cpy->count = 0;
+    for (i = 0; i < array->count; ++i)
+    {
+        ArrayList_add(cpy, ArrayList_get(array, i));
+    }
+    return cpy;
+}
+
 void ArrayList_destroy(ArrayList_t *array)
 {
     free(array->data);
@@ -23,6 +35,7 @@ void ArrayList_destroy(ArrayList_t *array)
     free(array);
     array = NULL;
 }
+
 int __ArrayListGrow(ArrayList_t *array)
 {
     char *data;
@@ -65,20 +78,24 @@ void ArrayList_print(ArrayList_t *array, Printer print)
     printf("]\n");
 }
 
-int __ArrayList_containIndex(ArrayList_t *array, int index)
+int __ArrayList_containIndex(ArrayList_t *array, size_t index)
 {
     return (0 <= index && index <= array->count);
 }
 
-char *ArrayList_get(ArrayList_t *array, int index)
+char *ArrayList_get(ArrayList_t *array, size_t index)
 {
     assert(array);
     assert(array->data);
     //printf("%d within %ld : %s", index, array->count, __ArrayList_containIndex(array, index) ? "yes" : "no");
+    if (!__ArrayList_containIndex(array, index) == 1 && !array->count == 0)
+    {
+        fprintf(stderr, "Error: index out of Range, try to get index %ld in a list of range %ld\n", index, array->count);
+    }
     assert(__ArrayList_containIndex(array, index) == 1 || array->count == 0);
     return (array->data + (index * array->__item_size));
 }
-void ArrayList_set(ArrayList_t *array, int index, char *val)
+void ArrayList_set(ArrayList_t *array, size_t index, char *val)
 {
     assert(array);
     assert(array->data);
@@ -86,7 +103,7 @@ void ArrayList_set(ArrayList_t *array, int index, char *val)
     memcpy(ArrayList_get(array, index), val, array->__item_size);
 }
 
-void ArrayList_insert(ArrayList_t *array, int index, char *val)
+void ArrayList_insert(ArrayList_t *array, size_t index, char *val)
 {
     int i;
     assert(array);
@@ -198,7 +215,6 @@ void ArrayList_printDouble(char *val)
 }
 
 #ifdef __ARRAYLIST_DEBUG
-
 
 void printDouble(char *val)
 {

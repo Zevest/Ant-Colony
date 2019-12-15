@@ -18,10 +18,10 @@ typedef struct NodeListElement
 
 struct fourmis_t
 {
-	int node ; 
-	ArrayList_t * tabou ; 
+	int node;
+	ArrayList_t *tabou;
 };
-typedef struct fourmis_t fourmis_t ;
+typedef struct fourmis_t fourmis_t;
 /* Définition d'une liste d'ajdacence (tableau) 
 	typedef struct AdjencyListElement
 	{
@@ -31,7 +31,7 @@ typedef struct fourmis_t fourmis_t ;
 	 Définition d'un Graphe */
 typedef struct GraphElement
 {
-	int nb_vertices;
+	int nb_vertices, antPerNode;
 	fourmis_t *fourmis;
 	ArrayList_t *liste_arc;
 	ArrayList_t *nodelist;
@@ -40,7 +40,7 @@ typedef struct GraphElement
 } GraphElement, *Graph;
 
 /* Prototypes */
-Graph new_graph(int vertices);
+Graph new_graph(int vertices, int antPerNode);
 Bool is_empty_graph(Graph g);
 Node add_node(int x);
 void add_edge(Graph g, int src, int dest);
