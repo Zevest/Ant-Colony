@@ -5,7 +5,7 @@
 #include "arrayList.h"
 #include "random.h"
 #include "graph.h"
-#define __ANT_COLON_DEBUG
+//#define __ANT_COLON_DEBUG
 void print_branch(char *b)
 {
 	Vector4_t *branch = (Vector4_t *)b;

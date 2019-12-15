@@ -4,7 +4,7 @@ CD = cd
 SDLBUILD = `sdl2-config --cflags --libs`
 LIBS = -lm
 DIR = 
-SRC = graph.c arrayList.c random.c vector.c
+SRC = graph.c arrayList.c random.c vector.c ant-colon.c
 MAIN = sdl_graph.c
 BUILD = ./
 OBJ = $(SRC:.c=.o)
