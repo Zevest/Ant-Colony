@@ -5,11 +5,12 @@
 #include "random.h"
 #include "graph.h"
 //#define __GRAPH_DEBUG
+
 /**
 * Créée un Graphe
-* vertices Le nombre de sommets
-* is_oriented Est-ce un graphe orienté ou non-orienté ?
-* return Le graphe créé
+* @param vertices Le nombre de sommets
+* @param antPerNode le nombre de fourmis par noeuds
+* @return Le graphe créé
 */
 Graph new_graph(int vertices, int antPerNode)
 {
@@ -40,8 +41,7 @@ Graph new_graph(int vertices, int antPerNode)
 			element->fourmis[element->antPerNode * i + j].tabou = ArrayList_new(sizeof i);
 		}
 	}
-	//ArrayList_add(element->fourmis[2*i].tabou,(char*) &i);
-	//ArrayList_add(element->fourmis[2*i+1].tabou,(char*) &i);
+
 	return element;
 }
 
@@ -49,7 +49,7 @@ Graph new_graph(int vertices, int antPerNode)
 
 /**
 * Teste si un Graphe existe
-* g Le Graphe à vérifier
+* @param g Le Graphe à vérifier
 * @return true Si le Graphe n'existe pas, false sinon
 */
 Bool is_empty_graph(Graph g)
@@ -64,8 +64,8 @@ Bool is_empty_graph(Graph g)
 
 /**
 * Retourne un Noeud
-* x La valeur du Noeud
-* Le Noeud créé
+* @param x La valeur du Noeud
+* @param Le Noeud créé
 */
 Node add_node(int x)
 {
@@ -91,9 +91,9 @@ void graph_free(Graph g)
 
 /**
 * Ajoute une arête à un Graphe
-* g Le Graphe
-* src Le premier sommet (ou source)
-* dest Le second sommet (ou destination)
+* @param g Le Graphe
+* @param src Le premier sommet (ou source)
+* @param dest Le second sommet (ou destination)
 */
 void add_edge(Graph g, int src, int dest)
 {

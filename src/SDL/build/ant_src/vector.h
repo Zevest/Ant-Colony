@@ -1,12 +1,27 @@
 #ifndef __VECTOR_H__
+
+/**
+ * Cette structure représente les vecteurs en mathématique
+ * Celui ci est un vecteur quadridimensionnel
+ */
 typedef struct Vector4_t
 {
     double x, y, z, w;
 } Vector4_t;
+
+/**
+ * Cette structure représente les vecteurs en mathématique
+ * Celui ci est un vecteur tridimensionnel
+ */
 typedef struct Vector3_t
 {
     double x, y, z;
 } Vector3_t;
+
+/**
+ * Cette structure représente les vecteurs en mathématique
+ * Celui ci est un vecteur bidimensionnel
+ */
 typedef struct Vector2_t
 {
     double x, y;

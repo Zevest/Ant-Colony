@@ -1,6 +1,15 @@
 #include <stdio.h>
 #ifndef __ARRAYLIST_H__
 
+/**
+ * Structure De liste Dynamique
+ * il s'agit d'un liste dont la taille varie en fonction du nombre d'élément
+ * qu'elle stocke.
+ * Lorsque la liste est pleine, elle voit sa capacité de stockage doubler
+ * Cette liste peut stocker n'importe quelle type de Donnée
+ * Elle ne peut néanmoins stocker qu'un seul type de donnée à la fois.
+ * On précise la taille de la donnée lors de l'initialisation d'un nouvelle liste
+ */
 typedef struct ArrayList
 {
     size_t __item_size, count, __size;
@@ -8,10 +17,17 @@ typedef struct ArrayList
 
 } ArrayList_t;
 
+/**
+ * Fonction permettant l'affichage du contenue de L'ArrayList
+ */
 typedef void (*Printer)(char *);
 
+/**
+ * Fonction permettant la comparison des élément de l'ArrayList
+ */
 typedef int (*Comparator)(char *, char *);
 
+// Prototype
 ArrayList_t *ArrayList_new(size_t __size);
 ArrayList_t *ArrayList_copy(ArrayList_t *array);
 

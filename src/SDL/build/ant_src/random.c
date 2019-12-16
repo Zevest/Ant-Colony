@@ -7,17 +7,35 @@
 
 int __Random_initialized = 0;
 
+/**
+ * Convertie d'un intervalle vers un autre 
+ * @param val valeur a convertir
+ * @param minSrc borne inférieur du premier intervalle
+ * @param maxSrc borne supérieur du premier intervalle
+ * @param minDest borne inférieur du second intervalle
+ * @param maxDest borne supérieur du second intervalle
+ * @return La valeur convertie dans le nouvel intervalle
+ */
 double map(double val, double minSrc, double maxSrc, double minDest, double maxDest)
 {
     return val / (maxSrc - minSrc) * (maxDest - minDest) + minDest;
 }
 
+/** 
+ * initialise la graine du générateur de nombre aléatoire
+ */
 void __Random_init()
 {
     __Random_initialized = 1;
     srand(time(NULL));
 }
 
+/**
+ * Génére un nombre aléatoire compris entre les bornes données
+ * @param minV borne inférieur
+ * @param maxV borne supérieur
+ * @return le nombre aléatoire appartenant à l'intervalle 
+ */
 double Random_randRange(double minV, double maxV)
 {
     if (!__Random_initialized)
@@ -25,6 +43,12 @@ double Random_randRange(double minV, double maxV)
     return map(rand(), 0, RAND_MAX, minV, maxV);
 }
 
+/**
+ * Génerere  aléatoirement l'indice d'un choix Basé sur les probabilités données
+ * @param weights la listes des probabilités des choix
+ * @param len le nombre de choix
+ * @return L'indice d'un choix en fonction la probabilité qu'il soit choisi
+ */
 int Random_weighted(double *weights, int len)
 {
     if (!__Random_initialized)
@@ -59,7 +83,8 @@ int Random_weighted(double *weights, int len)
         i = *(int *)ArrayList_get(index, Random_randRange(0, index->count));
     else
         i = -1;
-
+    //ArrayList_print(coeff, ArrayList_printDouble);
+    //ArrayList_print(index, ArrayList_printInt);
     ArrayList_destroy(index);
     ArrayList_destroy(coeff);
     return i;

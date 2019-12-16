@@ -7,60 +7,19 @@
 #include "ant-colon.h"
 
 const int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
-const char ressourcesPath[] = "rsc";
+
 void logSDLError(FILE *os, const char *msg)
 {
 	fprintf(os, "%s error: %s\n", msg, SDL_GetError());
 }
 
 /**
-* Loads a BMP image into a texture on the rendering device
-* @param file The BMP image file to load
-* @param renderer The renderer to load the texture onto
-* @return the loaded texture, or nullptr if something went wrong.
-*/
-SDL_Texture *loadTexture(char *file, SDL_Renderer *renderer)
-{
-	SDL_Texture *texture = NULL;
-
-	SDL_Surface *loadedImage = SDL_LoadBMP(file);
-	if (loadedImage != NULL)
-	{
-		texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
-		SDL_FreeSurface(loadedImage);
-
-		if (texture == NULL)
-		{
-			//fprintf(stdout, "test\n");
-			logSDLError(stdout, "CreateTextureFromSurface");
-			SDL_Quit();
-		}
-	}
-	else
-	{
-		//fprintf(stdout, "test\n");
-		logSDLError(stdout, "LoadBMP");
-	}
-	return texture;
-}
-
-/**
-* Draw an SDL_Texture to an SDL_Renderer at position x, y, preserving
-* the texture's width and height
-* @param texure The source texture we want to draw
-* @param renderer The renderer we want to draw to
-* @param x The x coordinate to draw to
-* @param y The y coordinate to draw to
-*/
-void renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y)
-{
-	SDL_Rect destination;
-	destination.x = x;
-	destination.y = y;
-	SDL_QueryTexture(texture, NULL, NULL, &destination.w, &destination.h);
-	SDL_RenderCopy(renderer, texture, NULL, &destination);
-}
-
+ * Dessine un cercle Avec SDL
+ * @param renderer permet l'affichage
+ * @param x position x du cercle
+ * @param y position y du cercle
+ * @param r Rayon du cercle
+ */
 void circle(SDL_Renderer *renderer, double x, double y, double r)
 {
 	int i, j;
@@ -76,6 +35,11 @@ void circle(SDL_Renderer *renderer, double x, double y, double r)
 	}
 }
 
+/**
+ * Affiche le chemin le plus court passant par tous les noeuds d'un graphe
+ * @param renderer permet l'affichage
+ * @param g Graph a afficher
+ */
 void drawBestGraphPath(SDL_Renderer *renderer, Graph g, ArrayList_t *path)
 {
 
@@ -88,13 +52,13 @@ void drawBestGraphPath(SDL_Renderer *renderer, Graph g, ArrayList_t *path)
 	{
 		if (i == path->count - 1)
 		{
-			printf("(%d, %d)", *pathPoints, *(int *)path->data);
+			//printf("(%d, %d)", *pathPoints, *(int *)path->data);
 			start = (Node)ArrayList_get(g->nodelist, *pathPoints);
 			end = (Node)ArrayList_get(g->nodelist, *(int *)path->data);
 		}
 		else
 		{
-			printf("(%d, %d)", *pathPoints, *(pathPoints + 1));
+			//printf("(%d, %d)", *pathPoints, *(pathPoints + 1));
 			start = (Node)ArrayList_get(g->nodelist, *pathPoints);
 			end = (Node)ArrayList_get(g->nodelist, *(pathPoints + 1));
 		}
@@ -124,6 +88,11 @@ void drawBestGraphPath(SDL_Renderer *renderer, Graph g, ArrayList_t *path)
 	}
 }
 
+/**
+ * Affiche une graph avec SDL
+ * @param renderer permet l'affichage
+ * @param g Graph a afficher
+ */
 void drawGraph(SDL_Renderer *renderer, Graph g)
 {
 	int i;
@@ -139,13 +108,11 @@ void drawGraph(SDL_Renderer *renderer, Graph g)
 						   map(start->pos.y, 0, 30, 0, SCREEN_HEIGHT),
 						   map(end->pos.x, 0, 30, 0, SCREEN_WIDTH),
 						   map(end->pos.y, 0, 30, 0, SCREEN_HEIGHT));
-		//printf("Arrête(%d, %d)\n	distance: %0.3f\n	phéromone: %0.3f\n", (int)branch.x, (int)branch.y, branch.w, branch.z);
 	}
 
 	for (i = 1; i < g->nb_vertices + 1; i++)
 	{
 		Node n = (Node)ArrayList_get(g->nodelist, i - 1);
-		//printf("(%d): ", i);
 		if (n != NULL)
 		{
 			double posX = map(n->pos.x, 0, 30, 0, SCREEN_WIDTH);
@@ -160,9 +127,6 @@ void drawGraph(SDL_Renderer *renderer, Graph g)
 	}
 }
 
-/*
- * Lesson 0: Test to make sure SDL is setup properly
- */
 int main(int argc, char **argv)
 {
 
@@ -215,27 +179,9 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	SDL_Rect rec2d = {
-		SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 200, 200};
-
-	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
-	//First clear the renderer
-	//SDL_RenderClear(renderer);
-	//Draw the texture
-	//SDL_RenderCopy(renderer, texture, NULL, NULL);
-	//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	//SDL_RenderFillRect(renderer, &rec2d);
-	//SDL_RenderDrawLine(renderer, 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-	//circle(renderer, 100, 100, 125);
-	//Update the screen
-	//SDL_RenderPresent(renderer);
-	//Take a quick break after all that hard work
-	//SDL_Delay(500);
-
 	print_graph(g);
 
 	SDL_Event event;
-
 	Bool exit = false;
 	while (!exit)
 	{
